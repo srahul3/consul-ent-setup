@@ -1,0 +1,86 @@
+---
+services:
+  consul-server:
+    image: hashicorp/consul-enterprise
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+      CONSUL_LICENSE: "${CONSUL_LICENSE}"
+      CONSUL_LOCAL_CONFIG: |
+        {
+          "client_addr": "0.0.0.0",
+          "node_name": "node-consul-server",
+          "bootstrap_expect": 1,
+          "retry_join": ["10.0.0.9"],
+          "server": true,
+          "ui_config": {
+            "enabled": true
+          },
+          "acl": {
+            "enabled": true,
+            "default_policy": "deny",
+            "down_policy": "extend-cache",
+            "enable_token_persistence": true,
+            "tokens": {
+                "master": "a234daab-bfd1-cbd3-1f83-abf24e094b39",
+                "agent": "a234daab-bfd1-cbd3-1f83-abf24e094b40"
+            }
+          }
+        }
+    networks:
+      abslnet:
+        ipv4_address: 10.0.0.9
+    ports:
+      # Consul HTTP
+      - "8500:8500/tcp"
+      # RPC
+      - "8300:8300/tcp"
+      # Gossip
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+  consul-client:
+    image: hashicorp/consul-enterprise
+    depends_on:
+      - consul-server
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+      CONSUL_LICENSE: "${CONSUL_LICENSE}"
+      CONSUL_LOCAL_CONFIG: |
+        {
+          "client_addr": "0.0.0.0",
+          "node_name": "node-client-agent",
+          "partition": "billing",
+          "retry_join": ["consul"],
+          "server": false,
+          "ui_config": {
+            "enabled": true
+          },
+          "acl": {
+            "enabled": true,
+            "default_policy": "deny",
+            "down_policy": "async-cache",
+            "tokens": {
+              "agent": "a234daab-bfd1-cbd3-1f83-abf24e094b40"
+            },
+            "enable_token_replication": false
+          }
+        }
+    networks:
+      abslnet:
+        ipv4_address: 10.0.0.11
+    ports:
+      # Consul HTTP
+      - "8502:8500/tcp"
+      # RPC
+      - "8302:8300/tcp"
+      # Gossip
+      - "8602:8600/tcp"
+      - "8602:8600/udp"
+    links:
+      - consul-server:consul
+
+networks:
+  abslnet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.0.0.0/16
