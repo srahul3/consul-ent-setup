@@ -20,9 +20,10 @@ services:
             "default_policy": "deny",
             "down_policy": "extend-cache",
             "enable_token_persistence": true,
+            "enable_token_replication": true,
             "tokens": {
                 "master": "a234daab-bfd1-cbd3-1f83-abf24e094b39",
-                "agent": "a234daab-bfd1-cbd3-1f83-abf24e094b40"
+                "agent": "fedfdd68-2515-447f-92cb-672d00e88271"
             }
           }
         }
@@ -59,9 +60,9 @@ services:
             "default_policy": "deny",
             "down_policy": "async-cache",
             "tokens": {
-              "agent": "a234daab-bfd1-cbd3-1f83-abf24e094b40"
+              "agent": "fedfdd68-2515-447f-92cb-672d00e88271"
             },
-            "enable_token_replication": false
+            "enable_token_replication": true
           }
         }
     networks:
