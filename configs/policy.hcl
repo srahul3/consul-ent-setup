@@ -1,5 +1,4 @@
 partition "billing" {
-  policy = "write"
   service_prefix "" {
     policy = "write"
   }
