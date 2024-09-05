@@ -1,0 +1,26 @@
+{
+    "Node": "node-fake-service",
+    "Address": "127.0.0.1",
+    "Partition": "billing",
+    "NodeMeta": {
+        "external-node": "true",
+        "external-probe": "true"
+    },
+    "Service": {
+        "ID": "fake-service-instance0",
+        "Service": "fake-service-instance",
+        "Port": 80,
+        "Partition": "billing"
+    },
+    "Checks": [
+        {
+            "Partition": "billing",
+            "Name": "http-check",
+            "status": "passing",
+            "Definition": {
+                "http": "http://127.0.0.1:19090/",
+                "interval": "60s"
+            }
+        }
+    ]
+}
