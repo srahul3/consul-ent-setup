@@ -18,7 +18,7 @@
             "Name": "http-check",
             "status": "passing",
             "Definition": {
-                "http": "http://127.0.0.1:19090/health",
+                "http": "http://127.0.0.1:19090/healthz",
                 "interval": "60s"
             }
         }
