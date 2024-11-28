@@ -28,7 +28,7 @@ $ cd /tmp && curl -LO https://github.com/srahul3/consul-ent-setup/archive/refs/h
 $ CONSUL_HTTP_TOKEN=a234daab-bfd1-cbd3-1f83-abf24e094b39 consul acl policy create -name "esm" -rules @policy.hcl -description "esm" -partition "billing"
 
 # Generating the ACL token for ESM and copy the secret-id to be provided in `config.hcl` in ESM configuration as `token`
-$ CONSUL_HTTP_TOKEN=a234daab-bfd1-cbd3-1f83-abf24e094b39 consul acl token create -partition "billing" -policy-name="esm"
+$ CONSUL_HTTP_TOKEN=a234daab-bfd1-cbd3-1f83-abf24e094b39 ./bin/consul acl token create -partition "billing" -policy-name="esm" -secret="52e7af34-4d54-43bf-8548-4861c39bdd5b"
 
 # Registering the fake service
 $ curl --request PUT --data @service.json localhost:8500/v1/catalog/register -H "x-consul-token: a234daab-bfd1-cbd3-1f83-abf24e094b39"
@@ -59,7 +59,7 @@ Put ESM config in the `config.hcl` file.
 ```hcl
 partition = "billing"
 http_addr = "http://localhost:8502"
-token = "generated token"
+token = "52e7af34-4d54-43bf-8548-4861c39bdd5b"
 ```
 
 ## Destroy
